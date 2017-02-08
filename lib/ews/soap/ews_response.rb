@@ -48,7 +48,7 @@ module Viewpoint::EWS::SOAP
 
       @response_messages = []
       response_type = response.keys.first
-      response[response_type][:elems][0][:response_messages][:elems].each do |rm|
+      get_response_messages(response_type).each do |rm|
         response_message_type = rm.keys[0]
         rm_klass = class_by_name(response_message_type)
         @response_messages << rm_klass.new(rm)
@@ -62,7 +62,7 @@ module Viewpoint::EWS::SOAP
 
     def simplify!
       response_type = response.keys.first
-      response[response_type][:elems][0][:response_messages][:elems].each do |rm|
+      get_response_messages(response_type).each do |rm|
         key = rm.keys.first
         rm[key][:elems] = rm[key][:elems].inject(&:merge)
       end
@@ -77,6 +77,14 @@ module Viewpoint::EWS::SOAP
       rescue NameError => e
         ResponseMessage
       end
+    end
+
+    def get_response_messages(response_type)
+      unless messages = response[response_type][:elems][0][:response_messages][:elems]
+        raise MalformedResponseError.new("Cannot find response_messages child elements", response)
+      end
+
+      messages
     end
 
   end # EwsSoapResponse

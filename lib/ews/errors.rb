@@ -46,6 +46,9 @@ module Viewpoint::EWS::Errors
   class ForbiddenResponseError < ResponseError
   end
 
+  class MalformedResponseError < ResponseError
+  end
+
   class SoapResponseError < ResponseError
     attr_reader :faultcode,
                 :faultstring
