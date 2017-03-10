@@ -68,6 +68,28 @@ module Viewpoint::EWS::Types
         if value.nil? && item_field
           # Build DeleteItemField Change
           item_updates << {delete_item_field: field}
+        elsif attribute == :required_attendees
+          # Updating property
+          elements = value.map do |attendee|
+            mailbox = attendee[:attendee][:mailbox]
+
+            elements = []
+            elements << { "Name" => { text: mailbox[:name] } } if mailbox[:name]
+            elements << { "EmailAddress" => { text: mailbox[:email_address] } } if mailbox[:email_address]
+
+            mailbox = [
+              {
+                "Mailbox" => {
+                  sub_elements: elements
+                }
+              }
+            ]
+            { "Attendee" => { sub_elements: mailbox } }
+          end
+
+          item_attributes = { "RequiredAttendees" => { sub_elements: elements } }
+
+          item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
         elsif item_field
           # Build SetItemField Change
           item = Viewpoint::EWS::Template::CalendarItem.new(attribute => value)
