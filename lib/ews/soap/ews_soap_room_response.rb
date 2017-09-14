@@ -29,15 +29,17 @@ module Viewpoint::EWS::SOAP
       subresponse[response_class][:elems]
     end
 
+    def response_message
+      key = response.keys.first
+      response[key]
+    end
+
     def roomsArray
       response[:get_rooms_response][:elems][1][:rooms][:elems]
     end
 
-    def success?
-      response.first[1][:attribs][:response_class] == "Success"
-    end
-
     private
+
 
     def simplify!
       if response_messages
