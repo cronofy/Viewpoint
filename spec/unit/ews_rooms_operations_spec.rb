@@ -2,7 +2,6 @@ require_relative '../spec_helper'
 
 describe "Room operations on Exchange Data Services" do
 
-  #let(:ecli) { Viewpoint::EWSClient.new('dontcare', 'dontcare', 'dontcare') }
   before do
     con = double('Connection')
     @ews = Viewpoint::EWS::SOAP::ExchangeWebService.new con,

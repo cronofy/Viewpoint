@@ -20,6 +20,9 @@ module Viewpoint::EWS
   # Generic Ews Error
   class EwsError < StandardError; end
 
+  # Raise when mailbox is missing
+  class EwsNoMailboxError < EwsError; end
+
   # Raise when authentication/authorization issues occur.
   class EwsLoginError < EwsError; end
 
