@@ -1334,7 +1334,7 @@ module Viewpoint::EWS::SOAP
 
     def enhanced_location!(opts)
       @nbuild[NS_EWS_TYPES].EnhancedLocation {
-        display_name!(opts[:display_name])
+        display_name!(opts[:display_name]) if opts[:display_name]
         annotation!(opts[:annotation]) if opts[:annotation]
         postal_address!(opts[:postal_address]) if opts[:postal_address]
       }
@@ -1342,20 +1342,20 @@ module Viewpoint::EWS::SOAP
 
     def postal_address!(opts)
       @nbuild[NS_EWS_TYPES].PostalAddress {
-        nbuild[NS_EWS_TYPES].Street(opts[:street])
-        nbuild[NS_EWS_TYPES].City(opts[:city])
-        nbuild[NS_EWS_TYPES].State(opts[:state])
-        nbuild[NS_EWS_TYPES].Country(opts[:country])
-        nbuild[NS_EWS_TYPES].PostalCode(opts[:postal_code])
-        nbuild[NS_EWS_TYPES].PostalAddressType(opts[:type])
-        nbuild[NS_EWS_TYPES].Latitude(opts[:latitude])
-        nbuild[NS_EWS_TYPES].Longitude(opts[:longitude])
-        nbuild[NS_EWS_TYPES].Accuracy(opts[:accuracy])
-        nbuild[NS_EWS_TYPES].Altitude(opts[:altitude])
-        nbuild[NS_EWS_TYPES].AltitudeAccuracy(opts[:altitude_accuracy])
-        nbuild[NS_EWS_TYPES].FormattedAddress(opts[:formatted_address])
-        nbuild[NS_EWS_TYPES].LocationUri(opts[:location_uri])
-        nbuild[NS_EWS_TYPES].LocationSource(opts[:location_source])
+        nbuild[NS_EWS_TYPES].Street(opts[:street]) if opts[:street]
+        nbuild[NS_EWS_TYPES].City(opts[:city]) if opts[:city]
+        nbuild[NS_EWS_TYPES].State(opts[:state]) if opts[:state]
+        nbuild[NS_EWS_TYPES].Country(opts[:country]) if opts[:country]
+        nbuild[NS_EWS_TYPES].PostalCode(opts[:postal_code]) if opts[:postal_code]
+        nbuild[NS_EWS_TYPES].PostalAddressType(opts[:type]) if opts[:type]
+        nbuild[NS_EWS_TYPES].Latitude(opts[:latitude]) if opts[:latitude]
+        nbuild[NS_EWS_TYPES].Longitude(opts[:longitude]) if opts[:longitude]
+        nbuild[NS_EWS_TYPES].Accuracy(opts[:accuracy]) if opts[:accuracy]
+        nbuild[NS_EWS_TYPES].Altitude(opts[:altitude]) if opts[:altitude]
+        nbuild[NS_EWS_TYPES].AltitudeAccuracy(opts[:altitude_accuracy]) if opts[:altitude_accuracy]
+        nbuild[NS_EWS_TYPES].FormattedAddress(opts[:formatted_address]) if opts[:formatted_address]
+        nbuild[NS_EWS_TYPES].LocationUri(opts[:location_uri]) if opts[:location_uri]
+        nbuild[NS_EWS_TYPES].LocationSource(opts[:location_source]) if opts[:location_source]
       }
     end
 
