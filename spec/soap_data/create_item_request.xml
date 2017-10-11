@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages">
+  <soap:Header>
+    <t:RequestServerVersion Version="Exchange2010_SP2"/>
+  </soap:Header>
+  <soap:Body>
+    <CreateItem xmlns="http://schemas.microsoft.com/exchange/services/2006/messages" SendMeetingInvitations="SendToAllAndSaveCopy">
+      <Items>
+        <t:CalendarItem>
+          <t:Subject>test cal item</t:Subject>
+          <t:Body BodyType="Text">this is a test cal item</t:Body>
+          <t:Start>2017-10-11T10:11:08+01:000</t:Start>
+          <t:End>2017-10-11T11:11:08+01:000</t:End>
+          <t:RequiredAttendees>
+            <t:Attendee>
+              <t:Mailbox>
+                <t:EmailAddress>example@example.com</t:EmailAddress>
+              </t:Mailbox>
+            </t:Attendee>
+          </t:RequiredAttendees>
+          <t:EnhancedLocation>
+            <t:DisplayName>Easy street london</t:DisplayName>
+            <t:Annotation>The cavern</t:Annotation>
+            <t:PostalAddress>
+              <t:Street>Easy street</t:Street>
+              <t:City>London</t:City>
+              <t:State>Londonshire</t:State>
+              <t:Country>United Kingdom</t:Country>
+              <t:PostalCode>A11AA</t:PostalCode>
+              <t:PostalAddressType>Business</t:PostalAddressType>
+              <t:Latitude>50.0222</t:Latitude>
+              <t:Longitude>3.1415</t:Longitude>
+              <t:Accuracy>100</t:Accuracy>
+              <t:Altitude>50</t:Altitude>
+              <t:AltitudeAccuracy>100</t:AltitudeAccuracy>
+              <t:FormattedAddress>Easy street london</t:FormattedAddress>
+              <t:LocationUri>http://www.example.com</t:LocationUri>
+              <t:LocationSource>Device</t:LocationSource>
+            </t:PostalAddress>
+          </t:EnhancedLocation>
+        </t:CalendarItem>
+      </Items>
+    </CreateItem>
+  </soap:Body>
+</soap:Envelope>

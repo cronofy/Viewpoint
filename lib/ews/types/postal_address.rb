@@ -15,6 +15,7 @@ module Viewpoint::EWS::Types
       accuracy:          [:accuracy],
       altitude:          [:altitude],
       altitude_accuracy: [:altitude_accuracy],
+      formatted_address: [:formatted_address],
       location_uri:      [:location_uri],
       location_source:   [:location_source],
     }
