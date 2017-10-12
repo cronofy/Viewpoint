@@ -16,7 +16,7 @@ module Viewpoint::EWS
         appointment_state recurrence first_occurrence last_occurrence modified_occurrences deleted_occurrences
         meeting_time_zone start_time_zone end_time_zone conference_type allow_new_time_proposal is_online_meeting
         meeting_workspace_url net_show_url effective_rights last_modified_name last_modified_time is_associated
-        web_client_read_form_query_string web_client_edit_form_query_string conversation_id unique_body
+        web_client_read_form_query_string web_client_edit_form_query_string conversation_id unique_body enhanced_location
       }.map(&:to_sym).freeze
 
       # Returns a new CalendarItem template

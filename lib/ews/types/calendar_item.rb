@@ -25,7 +25,8 @@ module Viewpoint::EWS::Types
       recurrence: [:recurrence, :elems ],
       deleted_occurrences: [:deleted_occurrences, :elems ],
       modified_occurrences: [:modified_occurrences, :elems ],
-      calendar_item_type: [:calendar_item_type, :text]
+      calendar_item_type: [:calendar_item_type, :text ],
+      enhanced_location: [:enhanced_location, :elems ],
    }
 
     CALENDAR_ITEM_KEY_TYPES = {
@@ -40,7 +41,8 @@ module Viewpoint::EWS::Types
       optional_attendees: :build_attendees_users,
       required_attendees: :build_attendees_users,
       deleted_occurrences: :build_deleted_occurrences,
-      modified_occurrences: :build_modified_occurrences
+      modified_occurrences: :build_modified_occurrences,
+      enhanced_location: :build_enhanced_location,
     }
 
     CALENDAR_ITEM_KEY_ALIAS = {}
@@ -156,6 +158,10 @@ module Viewpoint::EWS::Types
 
     def duration_in_seconds
       iso8601_duration_to_seconds(duration)
+    end
+
+    def build_enhanced_location(location_ews)
+      Types::EnhancedLocation.new(ews, location_ews)
     end
 
     private
