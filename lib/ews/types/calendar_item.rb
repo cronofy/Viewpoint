@@ -92,6 +92,45 @@ module Viewpoint::EWS::Types
           item_attributes = { "RequiredAttendees" => { sub_elements: elements } }
 
           item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
+        elsif attribute == :enhanced_location
+          if value[:value] == :delete
+            # Deleting property
+            item_updates << { delete_item_field: { field_uRI: { field_uRI: "calendar:EnhancedLocation"} } }
+          else
+            # Updating property
+            elements = []
+            elements << { "DisplayName" => { text: value[:display_name] } } if value[:display_name]
+            elements << { "Annotation" => { text: value[:annotation] } } if value[:annotation]
+
+            if address = value[:postal_address]
+              address_elements = []
+
+              address_elements << { "Street" => { text: address[:street] } } if address[:street]
+              address_elements << { "City" => { text: address[:city] } } if address[:city]
+              address_elements << { "State" => { text: address[:state] } } if address[:state]
+              address_elements << { "Country" => { text: address[:country] } } if address[:country]
+              address_elements << { "PostalCode" => { text: address[:postal_code] } } if address[:postal_code]
+              address_elements << { "Type" => { text: address[:type] } } if address[:type]
+              address_elements << { "Latitude" => { text: address[:latitude] } } if address[:latitude]
+              address_elements << { "Longitude" => { text: address[:longitude] } } if address[:longitude]
+              address_elements << { "Accuracy" => { text: address[:accuracy] } } if address[:accuracy]
+              address_elements << { "Altitude" => { text: address[:altitude] } } if address[:altitude]
+              address_elements << { "AltitudeAccuracy" => { text: address[:altitude_accuracy] } } if address[:altitude_accuracy]
+              address_elements << { "FormattedAddress" => { text: address[:formatted_address] } } if address[:formatted_address]
+              address_elements << { "LocationUri" => { text: address[:location_uri] } } if address[:location_uri]
+              address_elements << { "LocationSource" => { text: address[:location_source] } } if address[:location_source]
+
+              elements << { "PostalAddress" => { sub_elements: address_elements } }
+            end
+
+            item_attributes = {
+              "EnhancedLocation" => {
+                sub_elements: elements
+              }
+            }
+
+            item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
+          end
         elsif item_field
           # Build SetItemField Change
           item = Viewpoint::EWS::Template::CalendarItem.new(attribute => value)

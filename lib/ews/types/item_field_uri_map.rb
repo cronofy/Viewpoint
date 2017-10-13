@@ -120,6 +120,7 @@ module Viewpoint
         :date_time_stamp  => {:text => 'calendar:DateTimeStamp', :writable => true},
         :start_time_zone  => {:text => 'calendar:StartTimeZone', :writable => true},
         :end_time_zone  => {:text => 'calendar:EndTimeZone', :writable => true},
+        :enhanced_location  => {:text => 'calendar:EnhancedLocation', :writable => true},
         :actual_work  => {:text => 'task:ActualWork', :writable => true},
         :assigned_time  => {:text => 'task:AssignedTime', :writable => true},
         :billing_information  => {:text => 'task:BillingInformation', :writable => true},
