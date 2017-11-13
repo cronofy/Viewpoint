@@ -27,6 +27,8 @@ module Viewpoint::EWS::Types
       modified_occurrences: [:modified_occurrences, :elems ],
       calendar_item_type: [:calendar_item_type, :text ],
       enhanced_location: [:enhanced_location, :elems ],
+      start_time_zone_id: [:start_time_zone_id, :text],
+      end_time_zone_id: [:end_time_zone_id, :text],
    }
 
     CALENDAR_ITEM_KEY_TYPES = {
