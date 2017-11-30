@@ -55,6 +55,7 @@ class Viewpoint::EWS::Connection
     @httpcli.send_timeout = opts[:send_timeout] if opts[:send_timeout]
     @httpcli.receive_timeout = opts[:receive_timeout] if opts[:receive_timeout]
     @httpcli.connect_timeout = opts[:connect_timeout] if opts[:connect_timeout]
+    @httpcli.transparent_gzip_decompression = true
     @endpoint = endpoint
   end
 
@@ -117,10 +118,9 @@ class Viewpoint::EWS::Connection
   # @return [String] If the request is successful (200) it returns the body of
   #   the response.
   def post(xmldoc)
-    headers = {'Content-Type' => 'text/xml'}
+    headers = {'Content-Type' => 'text/xml', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3' }
     check_response( @httpcli.post(@endpoint, xmldoc, headers) )
   end
-
 
   private
 
