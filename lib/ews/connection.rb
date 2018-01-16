@@ -47,6 +47,14 @@ class Viewpoint::EWS::Connection
       end
     end
 
+    if opts[:debug_dev]
+      @httpcli.debug_dev = opts[:debug_dev]
+    end
+
+    if opts[:force_basic_auth]
+      @httpcli.force_basic_auth = true
+    end
+
     @httpcli.ssl_config.verify_mode = opts[:ssl_verify_mode] if opts[:ssl_verify_mode]
     @httpcli.ssl_config.ssl_version = opts[:ssl_version] if opts[:ssl_version]
     # Up the keep-alive so we don't have to do the NTLM dance as often.
@@ -57,6 +65,10 @@ class Viewpoint::EWS::Connection
     @httpcli.connect_timeout = opts[:connect_timeout] if opts[:connect_timeout]
     @httpcli.transparent_gzip_decompression = true
     @endpoint = endpoint
+  end
+
+  def force_basic_auth=(value)
+    @httpcli.force_basic_auth = value
   end
 
   def set_auth(user,pass)
