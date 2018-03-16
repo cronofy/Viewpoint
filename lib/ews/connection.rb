@@ -34,11 +34,7 @@ class Viewpoint::EWS::Connection
   # @option opts [String] :user_agent the http user agent to use in all requests
   def initialize(endpoint, opts = {})
     @log = Logging.logger[self.class.name.to_s.to_sym]
-    if opts[:user_agent]
-      @httpcli = HTTPClient.new(agent_name: opts[:user_agent])
-    else
-      @httpcli = HTTPClient.new
-    end
+    @httpcli = HTTPClient.new
 
     if opts[:trust_ca]
       @httpcli.ssl_config.clear_cert_store
@@ -54,6 +50,8 @@ class Viewpoint::EWS::Connection
     if opts[:force_basic_auth]
       @httpcli.force_basic_auth = true
     end
+
+    @httpcli.default_header['User-Agent'] = opts[:user_agent] if opts[:user_agent]
 
     @httpcli.ssl_config.verify_mode = opts[:ssl_verify_mode] if opts[:ssl_verify_mode]
     @httpcli.ssl_config.ssl_version = opts[:ssl_version] if opts[:ssl_version]
