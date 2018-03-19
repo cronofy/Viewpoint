@@ -59,8 +59,43 @@ module Viewpoint::EWS::SOAP
 
     private
 
+    def valid_response
+      return false unless @resp[:envelope]
+      return false unless @resp[:envelope][:elems]
+      return false unless envelope.length == 2
+
+      true
+    end
+
+    def valid_header
+      return false unless envelope[0]
+      return false unless envelope[0][:header]
+      return false unless envelope[0][:header][:elems]
+
+      return true
+    end
+
+    def valid_body
+      return false unless envelope[1]
+      return false unless envelope[1][:body]
+      return false unless envelope[1][:body][:elems]
+
+      return true
+    end
 
     def simplify!
+      unless valid_response
+        raise Viewpoint::EWS::Errors::MalformedResponseError.new("Invalid EWS response missing envelope - received=#{@resp}", @resp)
+      end
+
+      unless valid_header
+        raise Viewpoint::EWS::Errors::MalformedResponseError.new("Invalid EWS response missing header - received=#{@resp}", @resp)
+      end
+
+      unless valid_body
+        raise Viewpoint::EWS::Errors::MalformedResponseError.new("Invalid EWS response missing body - received=#{@resp}", @resp)
+      end
+
       response_type = response.keys.first
       get_response_messages(response_type).each do |rm|
         key = rm.keys.first
