@@ -46,7 +46,13 @@ module Viewpoint::EWS::Errors
   class ForbiddenResponseError < ResponseError
   end
 
-  class MalformedResponseError < ResponseError
+  class MalformedResponseError < RuntimeError
+    attr_reader :response
+
+    def initialize(message, response)
+      super(message)
+      @response = response
+    end
   end
 
   class SoapResponseError < ResponseError
