@@ -1306,7 +1306,7 @@ module Viewpoint::EWS::SOAP
 
     def accept_item!(opts)
       @nbuild[NS_EWS_TYPES].AcceptItem {
-        sensitivity!(opts)
+        sensitivity!(opts[:sensitivity])
         body!(opts) if opts[:text]
         reference_item_id!(opts)
       }
@@ -1314,7 +1314,7 @@ module Viewpoint::EWS::SOAP
 
     def tentatively_accept_item!(opts)
       @nbuild[NS_EWS_TYPES].TentativelyAcceptItem {
-        sensitivity!(opts)
+        sensitivity!(opts[:sensitivity])
         body!(opts) if opts[:text]
         reference_item_id!(opts)
       }
@@ -1322,14 +1322,14 @@ module Viewpoint::EWS::SOAP
 
     def decline_item!(opts)
       @nbuild[NS_EWS_TYPES].DeclineItem {
-        sensitivity!(opts)
+        sensitivity!(opts[:sensitivity])
         body!(opts) if opts[:text]
         reference_item_id!(opts)
       }
     end
 
     def sensitivity!(value)
-      nbuild[NS_EWS_TYPES].Sensitivity(value[:sensitivity])
+      nbuild[NS_EWS_TYPES].Sensitivity(value)
     end
 
     def enhanced_location!(opts)
