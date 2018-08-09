@@ -30,6 +30,7 @@ module Viewpoint::EWS::Types
       enhanced_location: [:enhanced_location, :elems ],
       start_time_zone_id: [:start_time_zone_id, :text],
       end_time_zone_id: [:end_time_zone_id, :text],
+      join_online_meeting_url: [:join_online_meeting_url, :text ],
    }
 
     CALENDAR_ITEM_KEY_TYPES = {
