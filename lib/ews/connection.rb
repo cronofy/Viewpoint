@@ -105,6 +105,9 @@ class Viewpoint::EWS::Connection
 
     if ews.impersonation_address && !ews.impersonation_address.empty?
       headers['X-AnchorMailbox'] = ews.impersonation_address
+      headers['X-PreferServerAffinity'] = 'true'
+      log.debug { "HEADERS =============" }
+      log.debug headers
     end
 
     respmsg = post(soapmsg, headers)
