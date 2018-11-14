@@ -101,7 +101,13 @@ class Viewpoint::EWS::Connection
       log.debug soapmsg
     end
 
-    respmsg = post(soapmsg)
+    headers = {}
+
+    if ews.impersonation_address && !ews.impersonation_address.empty?
+      headers['X-AnchorMailbox'] = ews.impersonation_address
+    end
+
+    respmsg = post(soapmsg, headers)
     @log.debug <<-EOF.gsub(/^ {6}/, '')
       Received SOAP Response:
       ----------------
@@ -127,9 +133,9 @@ class Viewpoint::EWS::Connection
   # Send a POST to the web service
   # @return [String] If the request is successful (200) it returns the body of
   #   the response.
-  def post(xmldoc)
+  def post(xmldoc, additional_headers = {})
     headers = {'Content-Type' => 'text/xml', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3' }
-    check_response( @httpcli.post(@endpoint, xmldoc, headers) )
+    check_response( @httpcli.post(@endpoint, xmldoc, headers.merge(additional_headers)) )
   end
 
   private
