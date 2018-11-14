@@ -27,4 +27,12 @@ module Viewpoint::EWS
     ews.impersonation_type = ""
     ews.impersonation_address = ""
   end
+
+  def set_anchor_mailbox(address)
+    ews.anchor_mailbox = address
+  end
+
+  def remove_anchor_mailbox(address)
+    ews.anchor_mailbox = nil
+  end
 end

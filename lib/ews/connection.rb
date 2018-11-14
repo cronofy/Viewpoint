@@ -101,7 +101,11 @@ class Viewpoint::EWS::Connection
       log.debug soapmsg
     end
 
-    respmsg = post(soapmsg)
+    headers = {}
+
+    set_mailbox_headers(ews, headers)
+
+    respmsg = post(soapmsg, headers)
     @log.debug <<-EOF.gsub(/^ {6}/, '')
       Received SOAP Response:
       ----------------
@@ -117,6 +121,19 @@ class Viewpoint::EWS::Connection
     opts[:raw_response] ? respmsg : ews.parse_soap_response(respmsg, opts)
   end
 
+  def set_mailbox_headers(ews, headers)
+    return unless present?(ews.anchor_mailbox)
+
+    headers['X-AnchorMailbox'] = ews.anchor_mailbox
+    headers['X-PreferServerAffinity'] = 'true'
+    log.debug { "HEADERS =============" }
+    log.debug headers
+  end
+
+  def present?(string)
+    string && !string.empty?
+  end
+
   # Send a GET to the web service
   # @return [String] If the request is successful (200) it returns the body of
   #   the response.
@@ -127,9 +144,9 @@ class Viewpoint::EWS::Connection
   # Send a POST to the web service
   # @return [String] If the request is successful (200) it returns the body of
   #   the response.
-  def post(xmldoc)
+  def post(xmldoc, additional_headers = {})
     headers = {'Content-Type' => 'text/xml', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3' }
-    check_response( @httpcli.post(@endpoint, xmldoc, headers) )
+    check_response( @httpcli.post(@endpoint, xmldoc, headers.merge(additional_headers)) )
   end
 
   private
