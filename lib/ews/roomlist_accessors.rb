@@ -41,7 +41,7 @@ module Viewpoint::EWS::RoomlistAccessors
       resp
     else
       case resp.code
-      when "ErrorNameResolutionNoMailbox"
+      when "ErrorNameResolutionNoMailbox", "ErrorNonExistentMailbox"
         raise EwsNoMailboxError, "GetRoomLists produced an error: #{resp.code}: #{resp.message}"
       else
         raise EwsError, "GetRoomLists produced an error: #{resp.code}: #{resp.message}"
