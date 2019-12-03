@@ -461,7 +461,23 @@ module Viewpoint::EWS::SOAP
 
     def time_zone!(zone_args)
       if zone_args == :utc
-        zone = { bias: 0 }
+        zone = {
+          bias: 0,
+          standard_time: {
+            bias: 0,
+            time: "02:00:00",
+            day_order: 1,
+            month: 10,
+            day_of_week: 'Sunday'
+          },
+          daylight_time: {
+            bias: 0,
+            time: "02:00:00",
+            day_order: 1,
+            month: 4,
+            day_of_week: 'Sunday'
+          },
+        }
       else
         zone = zone_args || {}
         zone = {
@@ -486,22 +502,21 @@ module Viewpoint::EWS::SOAP
       nbuild[NS_EWS_TYPES].TimeZone {
         nbuild[NS_EWS_TYPES].Bias(zone[:bias])
 
-        unless zone_args == :utc
-          nbuild[NS_EWS_TYPES].StandardTime {
-            nbuild[NS_EWS_TYPES].Bias(zone[:standard_time][:bias])
-            nbuild[NS_EWS_TYPES].Time(zone[:standard_time][:time])
-            nbuild[NS_EWS_TYPES].DayOrder(zone[:standard_time][:day_order])
-            nbuild[NS_EWS_TYPES].Month(zone[:standard_time][:month])
-            nbuild[NS_EWS_TYPES].DayOfWeek(zone[:standard_time][:day_of_week])
-          }
-          nbuild[NS_EWS_TYPES].DaylightTime {
-            nbuild[NS_EWS_TYPES].Bias(zone[:daylight_time][:bias])
-            nbuild[NS_EWS_TYPES].Time(zone[:daylight_time][:time])
-            nbuild[NS_EWS_TYPES].DayOrder(zone[:daylight_time][:day_order])
-            nbuild[NS_EWS_TYPES].Month(zone[:daylight_time][:month])
-            nbuild[NS_EWS_TYPES].DayOfWeek(zone[:daylight_time][:day_of_week])
-          }
-        end
+        nbuild[NS_EWS_TYPES].StandardTime {
+          nbuild[NS_EWS_TYPES].Bias(zone[:standard_time][:bias])
+          nbuild[NS_EWS_TYPES].Time(zone[:standard_time][:time])
+          nbuild[NS_EWS_TYPES].DayOrder(zone[:standard_time][:day_order])
+          nbuild[NS_EWS_TYPES].Month(zone[:standard_time][:month])
+          nbuild[NS_EWS_TYPES].DayOfWeek(zone[:standard_time][:day_of_week])
+        }
+
+        nbuild[NS_EWS_TYPES].DaylightTime {
+          nbuild[NS_EWS_TYPES].Bias(zone[:daylight_time][:bias])
+          nbuild[NS_EWS_TYPES].Time(zone[:daylight_time][:time])
+          nbuild[NS_EWS_TYPES].DayOrder(zone[:daylight_time][:day_order])
+          nbuild[NS_EWS_TYPES].Month(zone[:daylight_time][:month])
+          nbuild[NS_EWS_TYPES].DayOfWeek(zone[:daylight_time][:day_of_week])
+        }
       }
     end
 
