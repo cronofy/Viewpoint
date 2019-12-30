@@ -5,6 +5,14 @@ module Viewpoint::EWS::Types
     include Viewpoint::EWS::Types::Item
     include Viewpoint::StringUtils
 
+    CALENDAR_ITEM_FIELD_URIS = {
+      :recurrence  => {:text => 'calendar:Recurrence', :writable => true},
+    }
+
+    CALENDAR_ITEM_FIELD_NESTED_UPDATES = %i{
+      recurrence
+    }
+
     CALENDAR_ITEM_KEY_PATHS = {
       recurring?:   [:is_recurring, :text],
       meeting?:     [:is_meeting, :text],
@@ -69,7 +77,12 @@ module Viewpoint::EWS::Types
     def update_item!(updates, options = {})
       item_updates = []
       updates.each do |attribute, value|
-        item_field = FIELD_URIS[attribute][:text] if FIELD_URIS.include? attribute
+        if CALENDAR_ITEM_FIELD_URIS.include?(attribute)
+          item_field = CALENDAR_ITEM_FIELD_URIS[attribute][:text]
+        elsif FIELD_URIS.include?(attribute)
+          item_field = FIELD_URIS[attribute][:text]
+        end
+
         field = {field_uRI: {field_uRI: item_field}}
 
         if value.nil? && item_field
@@ -136,6 +149,24 @@ module Viewpoint::EWS::Types
 
             item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
           end
+        elsif CALENDAR_ITEM_FIELD_NESTED_UPDATES.include?(attribute)
+          # Build SetItemField Change
+          item = Viewpoint::EWS::Template::CalendarItem.new(attribute => value)
+
+          # Remap attributes because ews_builder #dispatch_field_item! uses #build_xml!
+          item_attributes = item.to_ews_item.map do |name, value|
+            case value
+            when String
+              { name => { text: value } }
+            when Hash
+              { name => { sub_elements: convert_update_to_sub_elements(Viewpoint::EWS::SOAP::EwsBuilder.camel_case_attributes(value)) } }
+            else
+              { name => value }
+            end
+          end
+
+          item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
+
         elsif item_field
           # Build SetItemField Change
           item = Viewpoint::EWS::Template::CalendarItem.new(attribute => value)
@@ -230,5 +261,21 @@ module Viewpoint::EWS::Types
       super.merge(CALENDAR_ITEM_KEY_ALIAS)
     end
 
+    def convert_update_to_sub_elements(hash)
+      hash.map do |key, value|
+        case value
+        when Hash
+          if value[:text]
+            { key => value }
+          elsif value[:sub_elements]
+            { key => value }
+          else
+            { key => { sub_elements: convert_update_to_sub_elements(value) } }
+          end
+        else
+          { key => { text: value.to_s } }
+        end
+      end
+    end
   end
 end
