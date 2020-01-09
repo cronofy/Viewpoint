@@ -1116,6 +1116,10 @@ module Viewpoint::EWS::SOAP
       nbuild[NS_EWS_TYPES].DaysOfWeek days_of_week
     end
 
+    def month!(month)
+      nbuild[NS_EWS_TYPES].Month month
+    end
+
     def day_of_week_index!(day_of_week_index)
       nbuild[NS_EWS_TYPES].DayOfWeekIndex day_of_week_index
     end
