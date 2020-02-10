@@ -167,7 +167,38 @@ module Viewpoint::EWS::Types
 
           item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
 
+        elsif attribute == :attachments
+          log.debug { "Attachment update - item_field=#{item_field.inspect} attribute=#{attribute} value=#{value}" }
+
+          file_attachments = value.map do |att|
+            log.debug { "Parsing attachment - att=#{att.id}" }
+
+            {
+              'FileAttachment' => {
+                sub_elements: [
+                  { 'Name' => { text: att[:name] } },
+                  { 'Content' => { text: att[:content] } },
+                  { 'ContentId' => { text: att[:id] } },
+                ]
+              }
+            }
+          end
+
+          update_attachments = {
+            set_item_field: field.merge({
+              calendar_item: {
+                sub_elements: {
+                  'Attachments' => { sub_elements: file_attachments }
+                }
+              }
+            })
+          }
+
+          item_updates << update_attachments
+
         elsif item_field
+          log.debug { "ItemField update - item_field=#{item_field.inspect} attribute=#{attribute} value=#{value}"}
+
           # Build SetItemField Change
           item = Viewpoint::EWS::Template::CalendarItem.new(attribute => value)
 
@@ -217,6 +248,7 @@ module Viewpoint::EWS::Types
           end
         else
           # Ignore unknown attribute
+          log.debug { "Passed unknown attribute - #{attribute}" }
         end
       end
 
