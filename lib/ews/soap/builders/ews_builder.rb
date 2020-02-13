@@ -914,6 +914,38 @@ module Viewpoint::EWS::SOAP
       }
     end
 
+    def absolute_monthly_recurrence!(item)
+      nbuild[NS_EWS_TYPES].AbsoluteMonthlyRecurrence {
+        item.each_pair { |k, v|
+          self.send("#{k}!", v)
+        }
+      }
+    end
+
+    def relative_monthly_recurrence!(item)
+      nbuild[NS_EWS_TYPES].RelativeMonthlyRecurrence {
+        item.each_pair { |k, v|
+          self.send("#{k}!", v)
+        }
+      }
+    end
+
+    def absolute_yearly_recurrence!(item)
+      nbuild[NS_EWS_TYPES].AbsoluteYearlyRecurrence {
+        item.each_pair { |k, v|
+          self.send("#{k}!", v)
+        }
+      }
+    end
+
+    def relative_yearly_recurrence!(item)
+      nbuild[NS_EWS_TYPES].RelativeYearlyRecurrence {
+        item.each_pair { |k, v|
+          self.send("#{k}!", v)
+        }
+      }
+    end
+
     def interval!(num)
       nbuild[NS_EWS_TYPES].Interval(num)
     end
@@ -934,10 +966,17 @@ module Viewpoint::EWS::SOAP
       }
     end
 
+    def end_date_recurrence!(item)
+      nbuild[NS_EWS_TYPES].EndDateRecurrence {
+        item.each_pair { |k, v|
+          self.send("#{k}!", v)
+        }
+      }
+    end
+
     def number_of_occurrences!(count)
       nbuild[NS_EWS_TYPES].NumberOfOccurrences(count)
     end
-
 
     def task!(item)
       nbuild[NS_EWS_TYPES].Task {
@@ -1063,6 +1102,26 @@ module Viewpoint::EWS::SOAP
 
     def start_date!(sd)
       nbuild[NS_EWS_TYPES].StartDate sd[:text]
+    end
+
+    def end_date!(ed)
+      nbuild[NS_EWS_TYPES].EndDate ed[:text]
+    end
+
+    def day_of_month!(day)
+      nbuild[NS_EWS_TYPES].DayOfMonth day
+    end
+
+    def days_of_week!(days_of_week)
+      nbuild[NS_EWS_TYPES].DaysOfWeek days_of_week
+    end
+
+    def month!(month)
+      nbuild[NS_EWS_TYPES].Month month
+    end
+
+    def day_of_week_index!(day_of_week_index)
+      nbuild[NS_EWS_TYPES].DayOfWeekIndex day_of_week_index
     end
 
     def due_date!(dd)
