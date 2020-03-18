@@ -171,7 +171,7 @@ module Viewpoint::EWS::Types
           log.debug { "Attachment update - item_field=#{item_field.inspect} attribute=#{attribute} value=#{value}" }
 
           file_attachments = value.map do |att|
-            log.debug { "Parsing attachment - att=#{att.id}" }
+            log.debug { "Parsing attachment - att=#{att[:id]}" }
 
             {
               'FileAttachment' => {
