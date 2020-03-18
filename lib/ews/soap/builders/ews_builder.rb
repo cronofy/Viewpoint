@@ -607,11 +607,11 @@ module Viewpoint::EWS::SOAP
       @nbuild[NS_EWS_TYPES].Contains(
         'ContainmentMode' => expr.delete(:containment_mode),
         'ContainmentComparison' => expr.delete(:containment_comparison)) {
-        c = expr.delete(:constant) # remove constant 1st for ordering
-        type = expr.keys.first
-        self.send(type, expr[type])
-        constant(c)
-      }
+          c = expr.delete(:constant) # remove constant 1st for ordering
+          type = expr.keys.first
+          self.send(type, expr[type])
+          constant(c)
+        }
     end
 
     def excludes(expr)
@@ -712,7 +712,7 @@ module Viewpoint::EWS::SOAP
         if eprop[:values]
           nbuild.Values {
             eprop[:values].each do |v|
-                value! v
+              value! v
             end
           }
         elsif eprop[:value]
@@ -1235,6 +1235,7 @@ module Viewpoint::EWS::SOAP
       @nbuild[NS_EWS_TYPES].FileAttachment {
         @nbuild[NS_EWS_TYPES].Name(fa.name)
         @nbuild[NS_EWS_TYPES].Content(fa.content)
+        @nbuild[NS_EWS_TYPES].ContentId(fa.content_id) if fa.content_id
       }
     end
 
@@ -1244,6 +1245,14 @@ module Viewpoint::EWS::SOAP
         @nbuild[NS_EWS_TYPES].Item {
           item_id!(ia.item)
         }
+      }
+    end
+
+    def attachments!(attachments)
+      @nbuild[NS_EWS_TYPES].Attachments {
+        attachments
+          .map{ |att| OpenStruct.new(name: att[:name], content: att[:content], content_id: att[:id]) }
+          .map{ |att| file_attachment!(att) }
       }
     end
 
@@ -1455,7 +1464,7 @@ private
 		      }
         }
       end
-	  end
+    end
 
     # Set TimeZoneContext Header
     # @param time_zone_def [Hash] !{id: time_zone_identifier, name: time_zone_name}
