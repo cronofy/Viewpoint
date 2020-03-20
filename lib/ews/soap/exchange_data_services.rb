@@ -388,6 +388,18 @@ module Viewpoint::EWS::SOAP
       do_soap_request(req, response_class: EwsResponse)
     end
 
+    def delete_attachments(ids)
+      ids = ids.clone
+
+      req = build_soap! do |type, builder|
+        if(type == :header)
+        else
+          builder.delete_attachments!(ids)
+        end
+      end
+      do_soap_request(req, response_class: EwsResponse)
+    end
+
     # ------------- Folder Operations ------------
 
     # Creates folders, calendar folders, contacts folders, tasks folders, and search folders.
