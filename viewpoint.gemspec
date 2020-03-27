@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   s.author = 'Dan Wanek'
   s.email = 'dan.wanek@gmail.com'
   s.homepage = 'http://github.com/zenchild/Viewpoint'
-  s.rubyforge_project = nil
 
   s.files = Dir['Changelog.txt', 'README.md', 'TODO', 'lib/**/*']
   s.require_path = 'lib'

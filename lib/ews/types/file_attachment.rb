@@ -39,7 +39,6 @@ module Viewpoint::EWS::Types
 
     private
 
-
     def key_paths
       super.merge(FILE_ATTACH_KEY_PATHS)
     end

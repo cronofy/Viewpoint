@@ -51,9 +51,7 @@ module Viewpoint::EWS::Types
       super(item.ews, attachment)
     end
 
-
     private
-
 
     def key_paths
       @key_paths ||= ATTACH_KEY_PATHS
