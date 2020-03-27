@@ -1259,7 +1259,7 @@ module Viewpoint::EWS::SOAP
     # @see https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/how-to-delete-attachments-by-using-ews-in-exchange#delete-attachments-from-an-item-by-using-ews
     def delete_attachments!(item_ids)
       @nbuild[NS_EWS_MESSAGES].DeleteAttachment{
-        @nbuild[NS_EWS_MESSAGES].AttachmentIds {|ai|
+        @nbuild[NS_EWS_MESSAGES].AttachmentIds {
           item_ids.each do |iid|
             @nbuild[NS_EWS_TYPES].AttachmentId({Id: iid})
           end
