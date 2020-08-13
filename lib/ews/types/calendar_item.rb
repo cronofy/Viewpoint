@@ -90,9 +90,9 @@ module Viewpoint::EWS::Types
           item_updates << {delete_item_field: field}
         elsif attribute == :required_attendees
           # Deleting Property
-          if value.empty?
+          if Array(value).empty?
             item_updates << {delete_item_field: field}
-            return
+            next
           end
 
           # Updating property
