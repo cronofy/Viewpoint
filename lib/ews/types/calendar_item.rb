@@ -107,9 +107,13 @@ module Viewpoint::EWS::Types
             { "Attendee" => { sub_elements: mailbox } }
           end
 
-          item_attributes = { "RequiredAttendees" => { sub_elements: elements } }
+          if elements.any?
+            item_attributes = { "RequiredAttendees" => { sub_elements: elements } }
+            item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
+          else
+            item_updates << {delete_item_field: field }
+          end
 
-          item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
         elsif attribute == :enhanced_location
           if value[:value] == :delete
             # Deleting property
