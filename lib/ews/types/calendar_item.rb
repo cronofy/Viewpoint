@@ -88,9 +88,13 @@ module Viewpoint::EWS::Types
         if value.nil? && item_field
           # Build DeleteItemField Change
           item_updates << {delete_item_field: field}
-        elsif value.is_a?(Array) && value.empty?
-          item_updates << {delete_item_field: field}
         elsif attribute == :required_attendees
+          # Deleting Property
+          if value.empty?
+            item_updates << {delete_item_field: field}
+            return
+          end
+
           # Updating property
           elements = value.map do |attendee|
             mailbox = attendee[:attendee][:mailbox]
