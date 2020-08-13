@@ -90,31 +90,30 @@ module Viewpoint::EWS::Types
           item_updates << {delete_item_field: field}
         elsif attribute == :required_attendees
           # Deleting Property
-          if Array(value).empty?
-            item_updates << {delete_item_field: field}
-            next
-          end
+          if value.empty?
+            item_updates << { delete_item_field: field }
+          else
+            # Updating property
+            elements = value.map do |attendee|
+              mailbox = attendee[:attendee][:mailbox]
 
-          # Updating property
-          elements = value.map do |attendee|
-            mailbox = attendee[:attendee][:mailbox]
+              elements = []
+              elements << { "Name" => { text: mailbox[:name] } } if mailbox[:name]
+              elements << { "EmailAddress" => { text: mailbox[:email_address] } } if mailbox[:email_address]
 
-            elements = []
-            elements << { "Name" => { text: mailbox[:name] } } if mailbox[:name]
-            elements << { "EmailAddress" => { text: mailbox[:email_address] } } if mailbox[:email_address]
-
-            mailbox = [
-              {
-                "Mailbox" => {
-                  sub_elements: elements
+              mailbox = [
+                {
+                  "Mailbox" => {
+                    sub_elements: elements
+                  }
                 }
-              }
-            ]
-            { "Attendee" => { sub_elements: mailbox } }
-          end
+              ]
+              { "Attendee" => { sub_elements: mailbox } }
+            end
 
-          item_attributes = { "RequiredAttendees" => { sub_elements: elements } }
-          item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
+            item_attributes = { "RequiredAttendees" => { sub_elements: elements } }
+            item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
+          end
         elsif attribute == :enhanced_location
           if value[:value] == :delete
             # Deleting property
