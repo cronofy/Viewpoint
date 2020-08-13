@@ -88,6 +88,8 @@ module Viewpoint::EWS::Types
         if value.nil? && item_field
           # Build DeleteItemField Change
           item_updates << {delete_item_field: field}
+        elsif value.is_a?(Array) && value.empty?
+          item_updates << {delete_item_field: field}
         elsif attribute == :required_attendees
           # Updating property
           elements = value.map do |attendee|
@@ -107,13 +109,8 @@ module Viewpoint::EWS::Types
             { "Attendee" => { sub_elements: mailbox } }
           end
 
-          if elements.any?
-            item_attributes = { "RequiredAttendees" => { sub_elements: elements } }
-            item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
-          else
-            item_updates << {delete_item_field: field }
-          end
-
+          item_attributes = { "RequiredAttendees" => { sub_elements: elements } }
+          item_updates << {set_item_field: field.merge(calendar_item: {sub_elements: item_attributes})}
         elsif attribute == :enhanced_location
           if value[:value] == :delete
             # Deleting property
