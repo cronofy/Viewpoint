@@ -46,6 +46,9 @@ module Viewpoint::EWS::Errors
   class ForbiddenResponseError < ResponseError
   end
 
+  class NotExtendedResponseError < ResponseError
+  end
+
   class MalformedResponseError < RuntimeError
     attr_reader :response
 

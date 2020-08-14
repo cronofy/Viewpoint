@@ -169,6 +169,8 @@ class Viewpoint::EWS::Connection
       else
         raise Errors::ServerError.new("Internal Server Error. Message: #{resp.body}", resp)
       end
+    when 510
+      raise Errors::NotExtendedResponseError.new("The policy for accessing the resource has not been met in the request.", resp)
     else
       raise Errors::ResponseError.new("HTTP Error Code: #{resp.status}, Msg: #{resp.body}", resp)
     end
