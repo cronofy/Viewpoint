@@ -44,8 +44,9 @@ module Viewpoint::EWS::ConvertAccessors
     rm = resp.response_messages[0]
 
     if(rm && rm.status == 'Success')
-      # @todo create custom response class
-      rm
+      id = rm.message.dig(:elems, :alternate_id, :attribs, :id)
+      raise EwsError, "Could not extract id from response." unless id
+      id
     else
       code = rm.respond_to?(:code) ? rm.code : "Unknown"
       text = rm.respond_to?(:message_text) ? rm.message_text : "Unknown"
