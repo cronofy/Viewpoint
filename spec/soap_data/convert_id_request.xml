@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages">
+  <soap:Header>
+    <t:RequestServerVersion Version="Exchange2013"/>
+  </soap:Header>
+  <soap:Body>
+    <ConvertId xmlns="http://schemas.microsoft.com/exchange/services/2006/messages" DestinationFormat="EntryId">
+      <SourceIds>
+        <t:AlternateId Format="EwsId" Id="AAMkAGQyMmE3ODAxLWZlNTItNDdiZS04NzNhLWQxNWQ4MjUzMzY1YgAuAAAAAADiDiwt8lJHQI9Vqfh/HOkiAQDwNDPGgnbYTa3P6qFapoP/AAAAAAENAAA=" Mailbox="foo@bar.com"/>
+      </SourceIds>
+    </ConvertId>
+  </soap:Body>
+</soap:Envelope>

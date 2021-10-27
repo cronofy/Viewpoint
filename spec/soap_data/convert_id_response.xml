@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Header>
+    <h:ServerVersionInfo xmlns:h="http://schemas.microsoft.com/exchange/services/2006/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" MajorVersion="15" MinorVersion="20" MajorBuildNumber="4628" MinorBuildNumber="20" Version="V2018_01_08"/>
+  </s:Header>
+  <s:Body>
+    <m:ConvertIdResponse xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+      <m:ResponseMessages>
+        <m:ConvertIdResponseMessage ResponseClass="Success">
+          <m:ResponseCode>NoError</m:ResponseCode>
+          <m:AlternateId xsi:type="t:AlternateIdType" Format="EntryId" Id="AAAAAOIOLC3yUkdAj1Wp+H8c6SIBAPA0M8aCdthNrc/qoVqmg/8AAAAAAQ0AAA==" Mailbox="foo@bar.com"/>
+        </m:ConvertIdResponseMessage>
+      </m:ResponseMessages>
+    </m:ConvertIdResponse>
+  </s:Body>
+</s:Envelope>
