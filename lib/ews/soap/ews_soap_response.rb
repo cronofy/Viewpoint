@@ -28,6 +28,10 @@ module Viewpoint::EWS::SOAP
     end
 
     def envelope
+      unless @resp[:envelope]
+        raise Viewpoint::EWS::Errors::MalformedResponseError.new("EWS response missing envelope - received=#{@resp}", @resp)
+      end
+
       @resp[:envelope][:elems]
     end
 
