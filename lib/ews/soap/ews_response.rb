@@ -56,7 +56,6 @@ module Viewpoint::EWS::SOAP
       @response_messages
     end
 
-
     private
 
     def valid_response
