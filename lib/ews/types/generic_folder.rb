@@ -190,6 +190,7 @@ module Viewpoint::EWS::Types
     #   See: http://msdn.microsoft.com/en-us/library/aa565609.aspx
     def sync_items!(sync_state = nil, sync_amount = 256, sync_all = false, opts = {})
       item_shape = opts.has_key?(:item_shape) ? opts.delete(:item_shape) : {:base_shape => :default}
+      id_only_request = item_shape[:base_shape] == "IdOnly"
       sync_state ||= @sync_state
 
       resp = ews.sync_folder_items item_shape: item_shape,
@@ -207,6 +208,10 @@ module Viewpoint::EWS::Types
             rhash[ctype] << c[ctype][:elems][0][:item_id][:attribs]
           else
             type = c[ctype][:elems][0].keys.first
+            if id_only_request && type.to_s.downcase == "item"
+              log.info { "Skipping item because it cannot be coerced to a specific type" }
+              next # We don't have enough detail to coerce this, and we cannot call Item.new
+            end
             item = class_by_name(type).new(ews, c[ctype][:elems][0][type])
             rhash[ctype] << item
           end
