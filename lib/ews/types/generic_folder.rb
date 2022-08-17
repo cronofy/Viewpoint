@@ -208,7 +208,8 @@ module Viewpoint::EWS::Types
             rhash[ctype] << c[ctype][:elems][0][:item_id][:attribs]
           else
             type = c[ctype][:elems][0].keys.first
-            if type.to_s.downcase == "item" && id_only_request
+            if id_only_request && type.to_s.downcase == "item"
+              log.info { "Skipping item because it cannot be coerced to a specific type" }
               next # We don't have enough detail to coerce this, and we cannot call Item.new
             end
             item = class_by_name(type).new(ews, c[ctype][:elems][0][type])
