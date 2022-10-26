@@ -61,4 +61,6 @@ module Viewpoint::EWS
 
   class EwsSendItemError < EwsError; end
 
+  class EwsUnknownClassError < EwsError; end
+
 end # Viewpoint::EWS
