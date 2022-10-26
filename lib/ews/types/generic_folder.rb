@@ -212,8 +212,13 @@ module Viewpoint::EWS::Types
               log.info { "Skipping item because it cannot be coerced to a specific type" }
               next # We don't have enough detail to coerce this, and we cannot call Item.new
             end
-            item = class_by_name(type).new(ews, c[ctype][:elems][0][type])
-            rhash[ctype] << item
+
+            begin
+              item = class_by_name(type).new(ews, c[ctype][:elems][0][type])
+              rhash[ctype] << item
+            rescue NameError => e
+              raise EwsUnknownClassError, "error=#{e.message} type=#{type} change_type=#{ctype} change=#{c}"
+            end
           end
         end
         rhash
