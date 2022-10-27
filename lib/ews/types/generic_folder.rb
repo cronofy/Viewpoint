@@ -212,6 +212,10 @@ module Viewpoint::EWS::Types
               log.info { "Skipping item because it cannot be coerced to a specific type" }
               next # We don't have enough detail to coerce this, and we cannot call Item.new
             end
+            if type.to_s.downcase == "booking"
+              log.info { "Skipping item because it does not yield any results" }
+              next
+            end
             item = class_by_name(type).new(ews, c[ctype][:elems][0][type])
             rhash[ctype] << item
           end
