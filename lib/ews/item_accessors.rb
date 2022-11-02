@@ -156,6 +156,13 @@ private
       if(rm && rm.status == 'Success')
         rm.items.each do |i|
           type = i.keys.first
+
+          # Same handling of GenericFolder#sync_items! to skip booking item
+          if type.to_s.downcase == "booking"
+            log.info { "Skipping booking item because it cannot be coerced to a specific type" }
+            next
+          end
+
           items << class_by_name(type).new(ews, i[type])
         end
       end
