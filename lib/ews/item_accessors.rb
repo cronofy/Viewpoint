@@ -158,7 +158,7 @@ private
           type = i.keys.first
 
           # Same handling of GenericFolder#sync_items! to skip booking item
-          if type.to_s.downcase == "booking"
+          if Viewpoint::EWS::Types::UNSUPPORTED_ITEM_TYPES.include?(type.to_s.downcase)
             log.info { "Skipping booking item because it cannot be coerced to a specific type" }
             next
           end
