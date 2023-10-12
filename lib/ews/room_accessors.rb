@@ -41,7 +41,7 @@ module Viewpoint::EWS::RoomAccessors
     if resp.success?
       resp
     else
-      raise EwsError, "GetRooms produced an error: #{resp.code}: #{resp.message}"
+      raise EwsError, "GetRooms produced an error: #{resp.code}: #{resp.message} [#{resp.response_class}]"
     end
   end
 
