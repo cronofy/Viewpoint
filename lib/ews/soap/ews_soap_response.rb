@@ -63,7 +63,7 @@ module Viewpoint::EWS::SOAP
     alias :status :response_class
 
     def response_code
-      response_message[:elems][:response_code][:text]
+      guard_hash response_message[:elems], [:response_code, :text]
     end
     alias :code :response_code
 
