@@ -114,7 +114,7 @@ module Viewpoint::EWS::SOAP
     end
 
     def get_response_messages(response_type)
-      unless messages = response[response_type][:elems][0][:response_messages][:elems]
+      unless messages = response.dig(response_type, :elems, 0, :response_messages, :elems)
         raise Viewpoint::EWS::Errors::MalformedResponseError.new("Cannot find response_messages child elements", response)
       end
 
