@@ -49,6 +49,9 @@ module Viewpoint::EWS::SOAP
 
     def response_messages
       key = response.keys.first
+      unless response[key]
+        raise Viewpoint::EWS::Errors::InterestingMalformedResponseError.new("body[0] was empty", response)
+      end
       response[key][:elems].find{|e| e.keys.include? :response_messages }[:response_messages][:elems]
     end
 

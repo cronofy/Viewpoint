@@ -114,6 +114,10 @@ module Viewpoint::EWS::SOAP
     end
 
     def get_response_messages(response_type)
+      unless response
+        raise Viewpoint::EWS::Errors::InterestingMalformedResponseError.new("body[0] was empty", response)
+      end
+
       unless messages = response.dig(response_type, :elems, 0, :response_messages, :elems)
         raise Viewpoint::EWS::Errors::MalformedResponseError.new("Cannot find response_messages child elements", response)
       end

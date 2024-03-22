@@ -58,6 +58,9 @@ module Viewpoint::EWS::Errors
     end
   end
 
+  class InterestingMalformedResponseError < MalformedResponseError
+  end
+
   class SoapResponseError < ResponseError
     attr_reader :faultcode,
                 :faultstring
