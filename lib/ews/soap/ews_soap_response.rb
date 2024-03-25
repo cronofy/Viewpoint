@@ -48,6 +48,10 @@ module Viewpoint::EWS::SOAP
     end
 
     def response_messages
+      unless response
+        raise Viewpoint::EWS::Errors::MalformedResponseError.new("body[0] was nil", response)
+      end
+
       key = response.keys.first
       response[key][:elems].find{|e| e.keys.include? :response_messages }[:response_messages][:elems]
     end
