@@ -53,7 +53,15 @@ module Viewpoint::EWS::SOAP
       end
 
       key = response.keys.first
-      response[key][:elems].find{|e| e.keys.include? :response_messages }[:response_messages][:elems]
+      unless key
+        raise Viewpoint::EWS::Errors::MalformedResponseError.new("key was nil", response)
+      end
+
+      unless elems = response.dig(key, :elems)
+        raise Viewpoint::EWS::Errors::MalformedResponseError.new("Could not find elems for key", response)
+      end
+
+      elems.find{|e| e.keys.include? :response_messages }[:response_messages][:elems]
     end
 
     def response_message
