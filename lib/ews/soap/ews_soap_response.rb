@@ -36,15 +36,15 @@ module Viewpoint::EWS::SOAP
     end
 
     def header
-      envelope[0][:header][:elems]
+      envelope.dig(0, :header, :elems)
     end
 
     def body
-      envelope[1][:body][:elems]
+      envelope.dig(1, :body, :elems)
     end
 
     def response
-      body[0]
+      body.dig(0)
     end
 
     def response_messages
