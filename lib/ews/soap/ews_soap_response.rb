@@ -44,6 +44,10 @@ module Viewpoint::EWS::SOAP
     end
 
     def response
+      unless body
+        raise Viewpoint::EWS::Errors::MalformedResponseError.new("EWS response missing body - received=#{@resp}", @resp)
+      end
+
       body.dig(0)
     end
 
