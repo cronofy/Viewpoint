@@ -236,8 +236,11 @@ module Viewpoint::EWS::Types
             #   log.info { "GenericFolder#sync_items! - Skipping booking item because it cannot be coerced to a specific type=#{type.to_s.downcase}" }
             #   next
             end
-            item = class_by_name(type).new(ews, c[ctype][:elems][0][type])
-            rhash[ctype] << item
+            if item = parse_item(type, c[type][:elems][0][type])
+              rhash[ctype] << item
+            else
+              log.info { "GenericFolder#sync_items - Skipping item type=#{type}"}
+            end
           end
         end
         rhash

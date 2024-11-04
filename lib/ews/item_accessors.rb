@@ -163,20 +163,25 @@ private
           #   next
           # end
 
-          begin
-            items << class_by_name(type).new(ews, i[type])
-          rescue => e
-            log.error { "ItemAccessors#get_items_parser - Failed to parse item - type=#{type} error=#{e.class}, message=#{e.message}" }
-            if type.to_s.downcase == "booking"
-              log.info { "ItemAccesor#get_items_parser - Skip booking item." } 
-              next
-            end
+          if item = parse_item(type, i[type])
+            items << item 
+          else
+            log.info { "Skipping item - type=#{type}"}
           end
         end
       end
     end
 
     items
+  end
+
+  def parse_item(type, item)
+    class_by_name(type).new(ews, item)
+  rescue => e
+    log.error { "ItemAccessors#get_items_parser - Failed to parse item - type=#{type} error=#{e.class}, message=#{e.message}" }
+    unless type.to_s.downcase == "booking"
+      raise
+    end
   end
 
   def find_items_args(opts)
