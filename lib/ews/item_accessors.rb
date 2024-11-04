@@ -159,7 +159,7 @@ private
 
           # Same handling of GenericFolder#sync_items! to skip booking item
           if Viewpoint::EWS::Types::UNSUPPORTED_ITEM_TYPES.include?(type.to_s.downcase)
-            log.info { "Skipping booking item because it cannot be coerced to a specific type" }
+            log.info { "ItemAccessors#get_items_parser - Skipping booking item because it cannot be coerced to a specific type=#{type.to_s.downcase}" }
             next
           end
 
