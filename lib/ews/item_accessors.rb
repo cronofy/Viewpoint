@@ -163,7 +163,15 @@ private
           #   next
           # end
 
-          items << class_by_name(type).new(ews, i[type])
+          begin
+            items << class_by_name(type).new(ews, i[type])
+          rescue => e
+            log.error { "ItemAccessors#get_items_parser - Failed to parse item - type=#{type} error=#{e.class}, message=#{e.message}" }
+            if type.to_s.downcase == "booking"
+              log.info { "ItemAccesor#get_items_parser - Skip booking item." } 
+              next
+            end
+          end
         end
       end
     end
