@@ -157,14 +157,8 @@ private
         rm.items.each do |i|
           type = i.keys.first
 
-          # Same handling of GenericFolder#sync_items! to skip booking item
-          # if Viewpoint::EWS::Types::UNSUPPORTED_ITEM_TYPES.include?(type.to_s.downcase)
-          #   log.info { "ItemAccessors#get_items_parser - Skipping booking item because it cannot be coerced to a specific type=#{type.to_s.downcase}" }
-          #   next
-          # end
-
           if item = parse_item(type, i[type])
-            items << item 
+            items << item
           else
             log.info { "Skipping item - type=#{type}"}
           end

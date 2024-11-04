@@ -10,8 +10,6 @@ module Viewpoint::EWS
     }
     KEY_ALIAS = {}
 
-    UNSUPPORTED_ITEM_TYPES = %w(booking).freeze
-
     attr_reader :ews_item
 
     # @param [SOAP::ExchangeWebService] ews the EWS reference
