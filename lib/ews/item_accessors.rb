@@ -173,7 +173,9 @@ private
     class_by_name(type).new(ews, item)
   rescue => e
     log.error { "Failed to parse item - type=#{type} error=#{e.class}, message=#{e.message}" }
-    unless type.to_s.downcase == "booking"
+
+    # Skipping the error if item is not fully supported and raise error for other types
+    unless Viewpoint::EWS::Types::PARTIALLY_SUPPORTED_ITEM_TYPES.include?(type.to_s.downcase)
       raise
     end
   end
