@@ -157,18 +157,25 @@ private
         rm.items.each do |i|
           type = i.keys.first
 
-          # Same handling of GenericFolder#sync_items! to skip booking item
-          if Viewpoint::EWS::Types::UNSUPPORTED_ITEM_TYPES.include?(type.to_s.downcase)
-            log.info { "Skipping booking item because it cannot be coerced to a specific type" }
-            next
+          if item = parse_item(type, i[type])
+            items << item
+          else
+            log.info { "ItemAccessors#get_items_parser - Skipping item - type=#{type}"}
           end
-
-          items << class_by_name(type).new(ews, i[type])
         end
       end
     end
 
     items
+  end
+
+  def parse_item(type, item)
+    class_by_name(type).new(ews, item)
+  rescue => e
+    log.error { "Failed to parse item - type=#{type} error=#{e.class}, message=#{e.message}" }
+    unless type.to_s.downcase == "booking"
+      raise
+    end
   end
 
   def find_items_args(opts)

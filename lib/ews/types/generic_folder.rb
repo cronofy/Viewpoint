@@ -208,36 +208,17 @@ module Viewpoint::EWS::Types
             rhash[ctype] << c[ctype][:elems][0][:item_id][:attribs]
           else
             type = c[ctype][:elems][0].keys.first
+
             if id_only_request && type.to_s.downcase == "item"
               log.info { "Skipping item because it cannot be coerced to a specific type" }
               next # We don't have enough detail to coerce this, and we cannot call Item.new
-            elsif Viewpoint::EWS::Types::UNSUPPORTED_ITEM_TYPES.include?(type.to_s.downcase)
-              # Sample booking item
-              # {:create=>
-              #   {:elems=>
-              #     [
-              #       {:booking=>
-              #         {:elems=>
-              #           [
-              #             {:item_id=>{:attribs=>{:id=>\"AAMkADM3...\", :change_key=>\"TgAAABYA...\"}}},
-              #             {:pre_buffer=>{:text=>\"0\"}},
-              #             {:post_buffer=>{:text=>\"0\"}},
-              #             {:pricing_type=>{:text=>\"Undefined\"}},
-              #             {:price=>{:text=>\"0\"}},
-              #             {:booking_fee=>{:text=>\"0\"}},
-              #             {:booking_tax=>{:text=>\"0\"}},
-              #             {:self_service_id=>{:text=>\"00000000...\"}}
-              #           ]
-              #         }
-              #       }
-              #     ]
-              #   }
-              # }
-              log.info { "Skipping booking item because it cannot be coerced to a specific type" }
-              next
             end
-            item = class_by_name(type).new(ews, c[ctype][:elems][0][type])
-            rhash[ctype] << item
+
+            if item = parse_item(type, c[ctype][:elems][0][type])
+              rhash[ctype] << item
+            else
+              log.info { "GenericFolder#sync_items - Skipping item type=#{type}"}
+            end
           end
         end
         rhash

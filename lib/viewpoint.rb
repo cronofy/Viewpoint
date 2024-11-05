@@ -73,6 +73,7 @@ require 'ews/types/search_folder'
 # Items
 require 'ews/types/message'
 require 'ews/types/calendar_item'
+require 'ews/types/booking'
 require 'ews/types/contact'
 require 'ews/types/distribution_list'
 require 'ews/types/meeting_message'
