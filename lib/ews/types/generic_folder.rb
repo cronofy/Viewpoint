@@ -214,7 +214,7 @@ module Viewpoint::EWS::Types
               next # We don't have enough detail to coerce this, and we cannot call Item.new
             end
 
-            if item = parse_item(type, c[type][:elems][0][type])
+            if item = parse_item(type, c[ctype][:elems][0][type])
               rhash[ctype] << item
             else
               log.info { "GenericFolder#sync_items - Skipping item type=#{type}"}
