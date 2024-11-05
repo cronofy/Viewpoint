@@ -174,7 +174,7 @@ private
   rescue => e
     log.error { "Failed to parse item - type=#{type} error=#{e.class}, message=#{e.message}" }
 
-    # skip the error if item is not fully supported
+    # Skipping the error if item is not fully supported and raise error for other types
     unless Viewpoint::EWS::Types::PARTIALLY_SUPPORTED_ITEM_TYPES.include?(type.to_s.downcase)
       raise
     end
