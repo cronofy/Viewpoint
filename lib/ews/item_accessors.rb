@@ -160,7 +160,7 @@ private
           if item = parse_item(type, i[type])
             items << item
           else
-            log.info { "Skipping item - type=#{type}"}
+            log.info { "ItemAccessors#get_items_parser - Skipping item - type=#{type}"}
           end
         end
       end
@@ -172,7 +172,7 @@ private
   def parse_item(type, item)
     class_by_name(type).new(ews, item)
   rescue => e
-    log.error { "ItemAccessors#get_items_parser - Failed to parse item - type=#{type} error=#{e.class}, message=#{e.message}" }
+    log.error { "Failed to parse item - type=#{type} error=#{e.class}, message=#{e.message}" }
     unless type.to_s.downcase == "booking"
       raise
     end
